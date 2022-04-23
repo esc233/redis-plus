@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoder 默认配置为PatternLayoutEncoder -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.springframework" level="INFO" />
+	<appender name="redisOldValueAppender" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>logFileName</key>
+			<defaultValue>redisOldValue</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="rollingAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>${USER_HOME}/logs/redis/${logFileName}.log</file>
+				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+					<fileNamePattern>${USER_HOME}/logs/redis/${logFileName}-%d{yyyy-MM-dd}.log</fileNamePattern>
+					<maxHistory>30</maxHistory>
+				</rollingPolicy>
+				<encoder>
+					<pattern>%d{HH:mm:ss.SSS,GMT+8} %-5p %t %logger{0} - %m%n</pattern>
+					<charset class="java.nio.charset.Charset">UTF-8</charset>
+				</encoder>
+			</appender>
+		</sift>
+	</appender>
+
+	<logger name="redisOldValue" level="DEBUG" additivity="true">
+		<appender-ref ref="redisOldValueAppender" />
+	</logger>
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>

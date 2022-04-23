@@ -1,0 +1,38 @@
+spring:
+  redis:
+    database: 0 # 连接工厂使用的数据库索引。
+    url:  # 连接URL，将覆盖主机，端口和密码（用户将被忽略），例如：redis://user:password@example.com:6379
+    # host: 192.168.1.167 #地址
+#    host: 192.168.1.167
+#    port: 7370
+    host: 192.168.1.120
+    port: 6170
+#    host: 127.0.0.1
+#    port: 6379
+    password:
+    ssl: false
+    timeout: 60s # 连接超时。
+    Lettuce:
+      pool:
+        max-active: 1000 # 池在给定时间可以分配的最大连接数。使用负值无限制。
+        max-idle: 800 # 池中“空闲”连接的最大数量。使用负值表示无限数量的空闲连接。
+        max-wait: -1s # 连接分配在池被耗尽时抛出异常之前应该阻塞的最长时间量（以毫秒为单位）。使用负值可以无限期地阻止。
+        min-idle: 0 # 目标为保持在池中的最小空闲连接数。这个设置只有在正面的情况下才有效果。
+    #sentinel:
+     # master: # （哨兵模式，不使用则不用开启）Redis服务器的名称。
+      #nodes: # （哨兵模式，不使用则不用开启）主机：端口对的逗号分隔列表。
+redis-common:
+  redis-lock:
+    expire-msecs: 1500
+    timeout-msecs: 1000
+    resolution-millis: 200
+    enable-lock: true
+    key-exclude:
+      - list1
+      - list2
+  redis-queue:
+    time-out: 300
+  bean-cache:
+    cache-init: true
+    root: org.whale
+#  do-init: false
