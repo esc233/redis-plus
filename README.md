@@ -1,9 +1,9 @@
-#1 引用方法
+# 1 引用方法
 
-##1.1 spring整合
+## 1.1 spring整合
 
-###1.1.1 maven引用
-
+### 1.1.1 maven引用
+````
     <dependency>
         <groupId>redis.clients</groupId>
         <artifactId>jedis</artifactId>
@@ -17,9 +17,9 @@
         <artifactId>redis-cbc</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
-    
-###1.1.2 spring.xml配置
-
+````    
+### 1.1.2 spring.xml配置
+````
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
     		<property name="maxIdle" value="${redis.maxIdle}" />  
             <property name="maxTotal" value="${redis.maxTotal}" />  
@@ -39,11 +39,11 @@
         <constructor-arg name="cacheInit" value="${redis.cacheInit}" />
         <constructor-arg name="root" value="${redis.root}" />
     </bean>
+````
+## 1.2 springboot整合
 
-##1.2 springboot整合
-
-###1.2.1 maven引用
-
+### 1.2.1 maven引用
+````
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -53,10 +53,9 @@
         <artifactId>redis-cbc</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
-    
-###1.2.2 config.java配置
-
-<pre><code>
+````    
+### 1.2.2 config.java配置
+````
     public class config {
         private String host;
         private int port;
@@ -131,10 +130,9 @@
             this.root = root;
         }
     }
-</code></pre>
-
-#2 配置参数
-
+````
+# 2 配置参数
+````
     redis:
         host: 127.0.0.1 #地址
         port: 6379 #端口
@@ -156,9 +154,10 @@
       timeoutMsecs: 1000 #锁等待时间，防止线程饥饿
     redisQueue:
       timeOut: 200
-#3 orm
+````
+# 3 orm
      
-#3.1 @RedisTable
+# 3.1 @RedisTable
 
 类标志，标志该类为redis pojo类型,会被缓存至内存，未标识@RedisTable类无法使用redisServer方法
 
@@ -168,27 +167,28 @@
  
  例子:
  
-<pre><code>
+````
 @RedisTable(tableName="WQ_FINANCIAL_ALLOT_INFO",key = "id:#id:name:#name",sequence = "SEQ_FINANCIAL_ALLOT_INFO")
+````
 </pre></code>
 
 其中  key的占位符以‘#’开头
 
-#3.2 @RedisTableId
+# 3.2 @RedisTableId
 
 field标识，标志该field为该pojo类的pk,save pojo时，该字段为null的话会自动从序列获取值，若未填写序列则保存失败
 
     String keyParam() default ""; 选填，填充key中对应的占位符
     
 例子:
-<pre><code>
+````
     @RedisTableId(keyParam = "#id")
         private Long id;
-</pre></code>
+````
 
 其中keyParam为‘#id’，表名当获取该类的key时，字段id的值将替换@RedisTable中key字符串中的'#id'，如果该值为空，则该pojo的key获取失败
 
-#3.3 @RedisColumn
+# 3.3 @RedisColumn
 
 field标识,标识需要特殊需求的pojo字段
 
@@ -201,22 +201,22 @@ field标识,标识需要特殊需求的pojo字段
         boolean redisParam() default true;/**是否是redis属性**/ 为false时该属性不存redis
 例子: 同3.2
 
-#4 redisService使用
+# 4 redisService使用
 
 redisService 为操作redis主类，封装save，update等方法s
 详细见src\main\java\org\whale\cbc\redis\service\RedisService.java注释
 
-#5 queueService使用
+# 5 queueService使用
 
 redis队列主类
 详细见src\main\java\org\whale\cbc\redis\service\QueueService.java注释
 
-#6 PubSubService
+# 6 PubSubService
 
 redis广播订阅主类
 详细见src\main\java\org\whale\cbc\redis\service\PubSubService.java注释
 
-#7 缓存配置
+# 7 缓存配置
 
     root: org.whale #扫描pojo根目录
     cacheInit: true #启动时是否扫描pojo类
